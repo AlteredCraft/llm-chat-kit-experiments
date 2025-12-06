@@ -10,6 +10,9 @@ dist/
 # User data (runtime generated)
 data/prompts.user.json
 
+# Test data (generated during test runs)
+tests/.test-data/
+
 # OS files
 .DS_Store
 Thumbs.db

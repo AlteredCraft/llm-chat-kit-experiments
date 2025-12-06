@@ -1,8 +1,12 @@
-import { readFile, writeFile, exists } from 'fs/promises';
+import { readFile, writeFile, exists, mkdir } from 'fs/promises';
 import { join } from 'path';
 
-const DATA_DIR = join(import.meta.dir, '../../../data');
+const DATA_DIR = process.env.DATA_DIR || join(import.meta.dir, '../../../data');
 const CONFIG_DIR = join(import.meta.dir, '../../../config');
+
+// Ensure data directory exists
+await mkdir(DATA_DIR, { recursive: true });
+
 
 export interface Prompt {
   id: string;

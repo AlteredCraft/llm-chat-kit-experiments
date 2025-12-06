@@ -5,3 +5,7 @@ exact = true
 [run]
 # Silence the bun run header
 silent = true
+
+[test]
+# Preload test setup to configure isolated data directory
+preload = ["./tests/setup.ts"]
