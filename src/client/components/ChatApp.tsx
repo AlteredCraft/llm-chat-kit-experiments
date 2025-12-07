@@ -68,7 +68,6 @@ export function ChatApp() {
             const savedSettings = storage.getSettings();
             const active =
                 result.prompts.find((p) => p.id === savedSettings?.activePromptId) ||
-                result.prompts.find((p) => p.isDefault) ||
                 result.prompts[0] ||
                 null;
             setActivePrompt(active);
@@ -110,7 +109,6 @@ export function ChatApp() {
             setPrompts((prev) => prev.filter((p) => p.id !== promptId));
             if (activePrompt?.id === promptId) {
                 const fallback =
-                    prompts.find((p) => p.isDefault && p.id !== promptId) ||
                     prompts.find((p) => p.id !== promptId) ||
                     null;
                 setActivePrompt(fallback);

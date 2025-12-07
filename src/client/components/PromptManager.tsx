@@ -148,9 +148,6 @@ export function PromptManager({
                             <div className="prompt-manager__info">
                                 <div className="prompt-manager__name">{prompt.name}</div>
                             </div>
-                            {prompt.isDefault && (
-                                <span className="prompt-manager__badge">default</span>
-                            )}
                             {isUserPrompt(prompt) && (
                                 <div className="prompt-manager__actions">
                                     <button

@@ -119,7 +119,7 @@ describe('API Integration Tests', () => {
       expect(data).toHaveProperty('prompt');
       expect(data.prompt.name).toBe(newPrompt.name);
       expect(data.prompt.prompt).toBe(newPrompt.prompt);
-      expect(data.prompt.isDefault).toBe(false);
+
     });
 
     it('should reject prompt without name', async () => {

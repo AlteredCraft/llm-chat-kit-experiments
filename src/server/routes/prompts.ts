@@ -35,7 +35,6 @@ promptsRoute.post('/', async (c) => {
       id: `user-${Date.now()}`,
       name,
       prompt,
-      isDefault: false,
       createdAt: new Date().toISOString(),
     };
 

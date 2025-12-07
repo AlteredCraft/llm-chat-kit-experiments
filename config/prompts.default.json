@@ -2,13 +2,11 @@
   {
     "id": "default",
     "name": "Default Assistant",
-    "prompt": "You are a helpful assistant.",
-    "isDefault": true
+    "prompt": "You are a helpful assistant."
   },
   {
     "id": "research",
     "name": "Research Helper",
-    "prompt": "You are a research assistant. Be thorough and cite your reasoning.",
-    "isDefault": false
+    "prompt": "You are a research assistant. Be thorough and cite your reasoning."
   }
 ]
