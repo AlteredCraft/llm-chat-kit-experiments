@@ -2,7 +2,7 @@
 
 ## Commands
 - **Build**: `bun run build` (Client & Server)
-- **Dev**: `bun run dev` (Client), `bun run dev:server` (Server)
+- **Dev**: `bun run dev` (Client only), `bun run dev:server` (Server only). **Both must run simultaneously** for full app functionality.
 - **Test All**: `bun test` (Target: Functions >80%, Lines >70%)
 - **Test Single**: `bun test tests/unit/startup.test.ts`
 - **Test Unit**: `bun test:unit` (Isolated logic, mocked deps)

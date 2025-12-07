@@ -91,7 +91,7 @@ describe('Startup Checks', () => {
       const checks = checkProviders({
         OPENAI_API_KEY: 'sk-test',
         ANTHROPIC_API_KEY: 'sk-ant-test',
-        GOOGLE_GENERATIVE_AI_API_KEY: 'AIza-test',
+        GEMINI_API_KEY: 'AIza-test',
       });
 
       // Should have all 4 providers (3 with keys + Ollama)

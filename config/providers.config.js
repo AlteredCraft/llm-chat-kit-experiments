@@ -11,7 +11,7 @@ export default {
       models: ['claude-sonnet-4-5', 'claude-haiku-4-5', 'claude-opus-4-5']
     },
     google: {
-      keyName: 'GOOGLE_GENERATIVE_AI_API_KEY',
+      keyName: 'GEMINI_API_KEY',
       docsUrl: 'https://ai.google.dev/gemini-api/docs/models',
       models: ['gemini-3-pro-preview', 'gemini-2.5-flash', 'gemini-2.5-flash-preview-09-2025', 'gemini-2.5-flash-lite-preview-09-2025']
     },
