@@ -81,6 +81,8 @@ export function ProviderSelect({
         // Clear model when switching providers
         onModelChange('');
         onProviderChange(newProvider);
+        // Directly load models for new provider (don't rely solely on useEffect)
+        loadModels(newProvider);
     }, [onProviderChange, onModelChange]);
 
     if (loadingProviders) {
