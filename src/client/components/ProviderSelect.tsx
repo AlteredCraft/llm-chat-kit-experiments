@@ -43,6 +43,9 @@ export function ProviderSelect({
             const enabledNames = loadedProviders.map((p) => p.name);
             if (!enabledNames.includes(provider) && loadedProviders.length > 0) {
                 onProviderChange(loadedProviders[0].name as ProviderName);
+            } else {
+                // Provider is valid, ensure models are loaded for initial sync
+                loadModels(provider);
             }
         } catch (error) {
             console.error('Failed to load providers:', error);

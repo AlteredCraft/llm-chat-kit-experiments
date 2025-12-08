@@ -54,6 +54,7 @@ export function ChatApp() {
                 setSettings((prev) => ({
                     ...prev,
                     provider: defaults.provider || 'ollama',
+                    model: '', // Clear model when provider changes to defaults
                     temperature: defaults.temperature,
                     maxTokens: defaults.maxTokens,
                 }));
