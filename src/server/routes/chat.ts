@@ -20,6 +20,20 @@ chatRoute.post('/', async (c) => {
     const body = await c.req.json<ChatRequest>();
     const { provider, model, messages, temperature = 0.7, maxTokens = 2048 } = body;
 
+    // Debug: Log the incoming request and filter empty messages
+    console.log('Chat request:', { provider, model, messageCount: messages.length });
+    
+    // Filter out messages with empty content (except system messages)
+    const filteredMessages = messages.filter(msg => 
+      msg.role === 'system' || (msg.content && msg.content.trim().length > 0)
+    );
+    
+    if (filteredMessages.length !== messages.length) {
+      console.log('Filtered out empty messages:', messages.length - filteredMessages.length);
+    }
+    
+    console.log('Messages:', JSON.stringify(filteredMessages, null, 2));
+
     // Validate provider
     if (!isProviderEnabled(provider)) {
       return c.json({ error: `Provider "${provider}" is not enabled` }, 400);
@@ -31,7 +45,7 @@ chatRoute.post('/', async (c) => {
     // Stream the response
     const result = streamText({
       model: modelInstance,
-      messages,
+      messages: filteredMessages,
       temperature,
       maxOutputTokens: maxTokens,
     });
