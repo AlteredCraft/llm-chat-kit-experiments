@@ -5,6 +5,69 @@ import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 import './ChatView.css';
 
+interface ValidationError {
+    field: string;
+    message: string;
+}
+
+function validateChatRequest(
+    userContent: string,
+    provider: string,
+    model: string,
+    systemPrompt: string
+): ValidationError[] {
+    const errors: ValidationError[] = [];
+
+    if (!userContent.trim()) {
+        errors.push({ field: 'message', message: 'Please enter a message' });
+    }
+
+    if (!provider.trim()) {
+        errors.push({ field: 'provider', message: 'Please select a provider' });
+    }
+
+    if (!model.trim()) {
+        errors.push({ field: 'model', message: 'Please select a model' });
+    }
+
+    if (!systemPrompt.trim()) {
+        errors.push({ field: 'systemPrompt', message: 'System prompt cannot be empty' });
+    }
+
+    return errors;
+}
+
+function getErrorMessage(error: unknown): string {
+    if (error instanceof Error) {
+        const message = error.message.toLowerCase();
+        
+        // Handle network/connection errors
+        if (message.includes('failed to fetch') || 
+            message.includes('networkerror') ||
+            message.includes('type error') ||
+            message.includes('connection refused') ||
+            message.includes('err_connection_refused') ||
+            message.includes('fetch error')) {
+            return 'Unable to connect to the server. Please check your connection and try again.';
+        }
+        
+        // Handle HTTP status errors
+        if (message.includes('404') || message.includes('not found')) {
+            return 'The requested model or provider was not found. Please check your settings.';
+        }
+        if (message.includes('500') || message.includes('internal server error')) {
+            return 'Server error occurred. Please try again later.';
+        }
+        if (message.includes('timeout')) {
+            return 'Request timed out. Please try again.';
+        }
+        
+        // Fallback for other errors - clean up technical jargon
+        return message.replace(/^[a-z]+error:/i, '').trim() || 'An unexpected error occurred. Please try again.';
+    }
+    return 'An unexpected error occurred. Please try again.';
+}
+
 interface ChatViewProps {
     provider: string;
     model: string;
@@ -26,6 +89,7 @@ export function ChatView({
 }: ChatViewProps) {
     const [messages, setMessages] = useState<Message[]>([]);
     const [isStreaming, setIsStreaming] = useState(false);
+    const [error, setError] = useState<string | null>(null);
     const messagesContainerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -56,6 +120,17 @@ export function ChatView({
 
     const handleSendMessage = useCallback(
         async (userContent: string) => {
+            // Clear any previous errors
+            setError(null);
+
+            // Client-side validation
+            const validationErrors = validateChatRequest(userContent, provider, model, systemPrompt);
+            if (validationErrors.length > 0) {
+                const errorMessage = validationErrors.map(err => err.message).join('. ');
+                setError(errorMessage);
+                return;
+            }
+
             // Add user message
             const userMessage: Message = {
                 role: 'user',
@@ -110,15 +185,12 @@ export function ChatView({
                     }
                 );
             } catch (error) {
-                const message =
-                    error instanceof Error ? error.message : 'Unknown error';
+                const userFriendlyMessage = getErrorMessage(error);
+                setError(userFriendlyMessage);
+                
+                // Remove the empty assistant message since the request failed
                 setMessages((prev) => {
-                    const updated = [...prev];
-                    const lastIndex = updated.length - 1;
-                    updated[lastIndex] = {
-                        ...updated[lastIndex],
-                        content: `Error: ${message}`,
-                    };
+                    const updated = prev.slice(0, -1); // Remove the empty assistant message
                     return updated;
                 });
             } finally {
@@ -157,14 +229,37 @@ export function ChatView({
                 )}
                 {isStreaming && (
                     <div className="chat-view__streaming-indicator">
-                        <span className="chat-view__dot" />
-                        Generating response...
+                        <div className="chat-view__streaming-dots">
+                            <span className="chat-view__dot" />
+                            <span className="chat-view__dot" />
+                            <span className="chat-view__dot" />
+                        </div>
+                        <span>AI is thinking...</span>
                     </div>
                 )}
             </div>
 
+            {error && (
+                <div className="chat-view__error">
+                    <span className="chat-view__error-icon">⚠️</span>
+                    {error}
+                    <button 
+                        className="chat-view__error-close" 
+                        onClick={() => setError(null)}
+                        aria-label="Dismiss error"
+                    >
+                        ×
+                    </button>
+                </div>
+            )}
+            
             <div className="chat-view__input-area">
-                <ChatInput disabled={isStreaming} onSendMessage={handleSendMessage} />
+                <ChatInput 
+                    disabled={isStreaming || !model.trim()} 
+                    noModelSelected={!model.trim()}
+                    isLoading={isStreaming}
+                    onSendMessage={handleSendMessage} 
+                />
             </div>
         </div>
     );

@@ -4,9 +4,11 @@ import './ChatInput.css';
 interface ChatInputProps {
     disabled?: boolean;
     onSendMessage: (content: string) => void;
+    noModelSelected?: boolean;
+    isLoading?: boolean;
 }
 
-export function ChatInput({ disabled = false, onSendMessage }: ChatInputProps) {
+export function ChatInput({ disabled = false, noModelSelected = false, isLoading = false, onSendMessage }: ChatInputProps) {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const submit = useCallback(() => {
@@ -44,14 +46,23 @@ export function ChatInput({ disabled = false, onSendMessage }: ChatInputProps) {
             <div className="chat-input__container">
                 <textarea
                     ref={textareaRef}
-                    placeholder="Type a message..."
+                    placeholder={noModelSelected ? "Please select a model in settings..." : "Type a message..."}
                     disabled={disabled}
                     onKeyDown={handleKeyDown}
                     onInput={handleInput}
                     rows={1}
                 />
-                <button disabled={disabled} onClick={submit}>
-                    Send
+                <button 
+                    disabled={disabled} 
+                    onClick={submit}
+                    title={noModelSelected ? "Please select a model first" : "Send message"}
+                    className={isLoading ? 'chat-input__button--loading' : ''}
+                >
+                    {isLoading ? (
+                        <span className="chat-input__spinner">⟳</span>
+                    ) : (
+                        'Send'
+                    )}
                 </button>
             </div>
             <div className="chat-input__hint">
