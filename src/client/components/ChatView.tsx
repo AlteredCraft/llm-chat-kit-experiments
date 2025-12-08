@@ -11,6 +11,7 @@ interface ChatViewProps {
     temperature: number;
     maxTokens: number;
     systemPrompt: string;
+    systemPromptName: string;
     onToggleSettings: () => void;
 }
 
@@ -20,6 +21,7 @@ export function ChatView({
     temperature,
     maxTokens,
     systemPrompt,
+    systemPromptName,
     onToggleSettings,
 }: ChatViewProps) {
     const [messages, setMessages] = useState<Message[]>([]);
@@ -67,6 +69,7 @@ export function ChatView({
                 content: '',
                 timestamp: Date.now() + 1,
                 model,
+                systemPromptName,
             };
 
             const newMessages = [...messages, userMessage, assistantMessage];
@@ -126,7 +129,7 @@ export function ChatView({
                 });
             }
         },
-        [messages, provider, model, temperature, maxTokens, systemPrompt, scrollToBottom, saveConversation]
+        [messages, provider, model, temperature, maxTokens, systemPrompt, systemPromptName, scrollToBottom, saveConversation]
     );
 
     const clearConversation = useCallback(() => {
@@ -149,7 +152,7 @@ export function ChatView({
                     <div className="chat-view__empty">Start a conversation</div>
                 ) : (
                      messages.map((m, i) => (
-                         <ChatMessage key={`${m.role}-${m.timestamp}-${i}`} role={m.role as 'user' | 'assistant'} content={m.content} model={m.model} />
+                         <ChatMessage key={`${m.role}-${m.timestamp}-${i}`} role={m.role as 'user' | 'assistant'} content={m.content} model={m.model} systemPromptName={m.systemPromptName} />
                      ))
                 )}
                 {isStreaming && (

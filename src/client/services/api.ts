@@ -5,6 +5,7 @@ export interface Message {
   content: string;
   timestamp?: number;
   model?: string;
+  systemPromptName?: string;
 }
 
 export interface Prompt {

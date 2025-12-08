@@ -10,7 +10,8 @@
   letter-spacing: 0.05em;
 }
 
-.chat-message__model {
+.chat-message__model,
+.chat-message__system-prompt {
   font-weight: normal;
   text-transform: none;
   letter-spacing: normal;

@@ -173,6 +173,7 @@ export function ChatApp() {
                     temperature={settings.temperature}
                     maxTokens={settings.maxTokens}
                     systemPrompt={activePrompt?.prompt || 'You are a helpful assistant.'}
+                    systemPromptName={activePrompt?.name || 'Default'}
                     onToggleSettings={() => setSettingsOpen((prev) => !prev)}
                 />
             </div>
