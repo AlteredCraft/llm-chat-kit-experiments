@@ -1,0 +1,160 @@
+.prompt-edit-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.prompt-edit-modal__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+}
+
+.prompt-edit-modal__content {
+    position: relative;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    max-width: 600px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.prompt-edit-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.prompt-edit-modal__header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.prompt-edit-modal__close {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    border-radius: 4px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.prompt-edit-modal__close:hover {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+.prompt-edit-modal__form {
+    padding: 1.5rem;
+}
+
+.prompt-edit-modal__field {
+    margin-bottom: 1.5rem;
+}
+
+.prompt-edit-modal__field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #374151;
+}
+
+.prompt-edit-modal__field input,
+.prompt-edit-modal__field textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.875rem;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.prompt-edit-modal__field input:focus,
+.prompt-edit-modal__field textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.prompt-edit-modal__notice {
+    background: #fef3c7;
+    border: 1px solid #f59e0b;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.prompt-edit-modal__notice p {
+    margin: 0;
+    color: #92400e;
+    font-size: 0.875rem;
+}
+
+.prompt-edit-modal__actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    margin-top: 2rem;
+}
+
+.prompt-edit-modal__cancel,
+.prompt-edit-modal__save {
+    padding: 0.625rem 1.25rem;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid;
+}
+
+.prompt-edit-modal__cancel {
+    background: white;
+    color: #6b7280;
+    border-color: #d1d5db;
+}
+
+.prompt-edit-modal__cancel:hover:not(:disabled) {
+    background: #f9fafb;
+    color: #374151;
+}
+
+.prompt-edit-modal__save {
+    background: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+
+.prompt-edit-modal__save:hover:not(:disabled) {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.prompt-edit-modal__cancel:disabled,
+.prompt-edit-modal__save:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

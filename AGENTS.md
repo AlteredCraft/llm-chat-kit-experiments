@@ -20,3 +20,21 @@
 - **Naming**: PascalCase for Components (`ChatApp`), camelCase for functions/vars.
 - **Config**: Providers in `config/providers.config.js`, Prompts in `config/prompts.default.json`.
 - **Formatting**: Standard TypeScript/React conventions.
+
+## Testing
+
+**IMPORTANT TEST REQUIREMENTS**: 
+- Run all tests after completing changes to ensure nothing is broken.
+  Report using ✅ or ❌ so it stands out.
+- Code coveraage MUST be higher that 80%, it it is not pause and ask the user if we should add more tests or if they want to proceed anyway.
+- ensure we don't over mock, we want valuable test that are testing our code not just mocks. Use DI where it makes sense.
+
+Two-tier approach (see `TESTS_STRAT.md` for details):
+
+- **Unit tests** (`tests/unit/`) - Isolated functions with dependency injection
+- **Integration tests** (`tests/integ/`) - API endpoints via Hono's in-process test client (no browser)
+
+Startup checks in `lib/startup.ts` accept optional `deps` parameter for testability:
+```typescript
+runStartupChecks({ env: {}, fileExists: () => false })
+```

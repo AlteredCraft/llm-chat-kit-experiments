@@ -3,6 +3,7 @@ import { storage, type Settings } from '../services/storage';
 import { promptsApi, providersApi, type Prompt } from '../services/api';
 import { ChatView } from './ChatView';
 import { SettingsPanel } from './SettingsPanel';
+import { PromptEditModal } from './PromptEditModal';
 import './ChatApp.css';
 
 const defaultSettings: Settings = {
@@ -20,6 +21,8 @@ export function ChatApp() {
     });
     const [prompts, setPrompts] = useState<Prompt[]>([]);
     const [activePrompt, setActivePrompt] = useState<Prompt | null>(null);
+    const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
+    const [isCreatingPrompt, setIsCreatingPrompt] = useState(false);
 
     useEffect(() => {
         loadDefaults();
@@ -104,6 +107,47 @@ export function ChatApp() {
         setActivePrompt((prev) => (prev?.id === prompt.id ? prompt : prev));
     }, []);
 
+    const handlePromptDuplicated = useCallback((prompt: Prompt) => {
+        setPrompts((prev) => [...prev, prompt]);
+        setActivePrompt(prompt);
+        handleSettingsChange({ activePromptId: prompt.id });
+    }, [handleSettingsChange]);
+
+    const handleStartEditPrompt = useCallback((prompt: Prompt) => {
+        setEditingPrompt(prompt);
+        setIsCreatingPrompt(false);
+    }, []);
+
+    const handleStartCreatePrompt = useCallback(() => {
+        setEditingPrompt(null);
+        setIsCreatingPrompt(true);
+    }, []);
+
+    const handleClosePromptModal = useCallback(() => {
+        setEditingPrompt(null);
+        setIsCreatingPrompt(false);
+    }, []);
+
+    const handleSavePrompt = useCallback(async (id: string, name: string, promptText: string) => {
+        if (isCreatingPrompt) {
+            const result = await promptsApi.create(name, promptText);
+            setPrompts((prev) => [...prev, result.prompt]);
+        } else {
+            const isUserPrompt = id.startsWith('user-');
+            if (isUserPrompt) {
+                const result = await promptsApi.update(id, name, promptText);
+                setPrompts((prev) => prev.map((p) => (p.id === id ? result.prompt : p)));
+                setActivePrompt((prev) => (prev?.id === id ? result.prompt : prev));
+            } else {
+                const result = await promptsApi.create(name, promptText);
+                setPrompts((prev) => [...prev, result.prompt]);
+                setActivePrompt(result.prompt);
+                handleSettingsChange({ activePromptId: result.prompt.id });
+            }
+        }
+        handleClosePromptModal();
+    }, [isCreatingPrompt, handleSettingsChange, handleClosePromptModal]);
+
     const handlePromptDeleted = useCallback(
         (promptId: string) => {
             setPrompts((prev) => prev.filter((p) => p.id !== promptId));
@@ -146,11 +190,19 @@ export function ChatApp() {
                     onClose={() => setSettingsOpen(false)}
                     onSettingsChange={handleSettingsChange}
                     onPromptSelected={handlePromptSelected}
-                    onPromptCreated={handlePromptCreated}
-                    onPromptUpdated={handlePromptUpdated}
                     onPromptDeleted={handlePromptDeleted}
+                    onStartEditPrompt={handleStartEditPrompt}
+                    onStartCreatePrompt={handleStartCreatePrompt}
                 />
             </div>
+
+            <PromptEditModal
+                prompt={editingPrompt}
+                isOpen={!!editingPrompt || isCreatingPrompt}
+                onClose={handleClosePromptModal}
+                onSave={handleSavePrompt}
+                isCreating={isCreatingPrompt}
+            />
         </div>
     );
 }

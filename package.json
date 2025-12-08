@@ -21,6 +21,7 @@
     "@ai-sdk/openai": "^2.0.0",
     "ai": "^5.0.0",
     "hono": "^4.10.0",
+    "lucide-react": "0.556.0",
     "ollama-ai-provider-v2": "^1.5.0",
     "react": "19.2.1",
     "react-dom": "19.2.1",

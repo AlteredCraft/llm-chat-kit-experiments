@@ -48,6 +48,7 @@
 .prompt-manager__actions {
     display: flex;
     gap: var(--space-xs);
+    align-items: center;
 }
 
 .prompt-manager__icon-btn {
@@ -59,6 +60,9 @@
     cursor: pointer;
     font-size: 0.875rem;
     line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .prompt-manager__icon-btn:hover {
@@ -68,13 +72,16 @@
 
 .prompt-manager button {
     padding: var(--space-sm) var(--space-md);
-    border: var(--border-width) solid var(--color-border);
+    border: none;
     border-radius: var(--border-radius);
-    background: var(--color-bg);
+    background: transparent;
     color: var(--color-fg);
     cursor: pointer;
     font-family: inherit;
     font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
 }
 
 .prompt-manager button:hover {

@@ -15,9 +15,9 @@ interface SettingsPanelProps {
     onClose: () => void;
     onSettingsChange: (updates: Partial<Settings>) => void;
     onPromptSelected: (promptId: string) => void;
-    onPromptCreated: (prompt: Prompt) => void;
-    onPromptUpdated: (prompt: Prompt) => void;
     onPromptDeleted: (promptId: string) => void;
+    onStartEditPrompt: (prompt: Prompt) => void;
+    onStartCreatePrompt: () => void;
 }
 
 export function SettingsPanel({
@@ -27,9 +27,9 @@ export function SettingsPanel({
     onClose,
     onSettingsChange,
     onPromptSelected,
-    onPromptCreated,
-    onPromptUpdated,
     onPromptDeleted,
+    onStartEditPrompt,
+    onStartCreatePrompt,
 }: SettingsPanelProps) {
     return (
         <div className="settings-panel">
@@ -67,9 +67,9 @@ export function SettingsPanel({
                         prompts={prompts}
                         activePromptId={activePromptId}
                         onPromptSelected={onPromptSelected}
-                        onPromptCreated={onPromptCreated}
-                        onPromptUpdated={onPromptUpdated}
                         onPromptDeleted={onPromptDeleted}
+                        onStartEditPrompt={onStartEditPrompt}
+                        onStartCreatePrompt={onStartCreatePrompt}
                     />
                 </div>
             </div>
