@@ -1,160 +1,221 @@
+/* PromptEditModal - Line Art Theme */
+
 .prompt-edit-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
 }
 
 .prompt-edit-modal__overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(2px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 26, 26, 0.4);
+  /* No blur - keep it crisp like technical drawings */
 }
 
+/* Modal Content - Sharp, Flat, Technical */
 .prompt-edit-modal__content {
-    position: relative;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    max-width: 600px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
+  position: relative;
+  background: var(--color-bg);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: none;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modal-enter var(--transition-normal) ease-out;
 }
 
+@keyframes modal-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Header - Clean and Bold */
 .prompt-edit-modal__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1.5rem 1.5rem 1rem;
-    border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  border-bottom: var(--border-width) solid var(--color-border);
 }
 
 .prompt-edit-modal__header h2 {
-    margin: 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #111827;
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-fg);
+  letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
 }
 
+/* Larger decorative color dots after title */
+.prompt-edit-modal__header h2::after {
+  content: '';
+  display: inline-flex;
+  width: 38px;
+  height: 14px;
+  background:
+    radial-gradient(circle at 7px 7px, var(--color-accent-blue) 6px, transparent 6px),
+    radial-gradient(circle at 26px 7px, var(--color-accent-orange) 6px, transparent 6px);
+}
+
+/* Close Button - Sharp Line Art Style */
 .prompt-edit-modal__close {
-    background: none;
-    border: none;
-    color: #6b7280;
-    cursor: pointer;
-    padding: 0.25rem;
-    line-height: 1;
-    border-radius: 4px;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  color: var(--color-fg);
+  cursor: pointer;
+  padding: var(--space-xs);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .prompt-edit-modal__close:hover {
-    background: #f3f4f6;
-    color: #374151;
+  background: var(--color-user-bg);
+  transform: scale(1.05);
 }
 
+/* Form Content */
 .prompt-edit-modal__form {
-    padding: 1.5rem;
+  padding: var(--space-lg);
 }
 
 .prompt-edit-modal__field {
-    margin-bottom: 1.5rem;
+  margin-bottom: var(--space-lg);
 }
 
+/* Labels - Monospace, Uppercase, Technical */
 .prompt-edit-modal__field label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #374151;
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-fg);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
+/* Input Fields - Sharp, Clean */
 .prompt-edit-modal__field input,
 .prompt-edit-modal__field textarea {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 0.875rem;
-    resize: vertical;
-    transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  resize: vertical;
+  transition: border-color var(--transition-fast);
 }
 
 .prompt-edit-modal__field input:focus,
 .prompt-edit-modal__field textarea:focus {
-    outline: none;
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  outline: none;
+  border-color: var(--color-accent-blue);
 }
 
+.prompt-edit-modal__field textarea {
+  min-height: 140px;
+}
+
+/* Notice Box - Warning Style */
 .prompt-edit-modal__notice {
-    background: #fef3c7;
-    border: 1px solid #f59e0b;
-    border-radius: 6px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+  background: var(--color-warning-bg);
+  border: var(--border-width) solid var(--color-warning-border);
+  border-radius: var(--border-radius);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-lg);
 }
 
 .prompt-edit-modal__notice p {
-    margin: 0;
-    color: #92400e;
-    font-size: 0.875rem;
+  margin: 0;
+  color: var(--color-fg);
+  font-size: var(--font-size-sm);
 }
 
+/* Action Buttons */
 .prompt-edit-modal__actions {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: flex-end;
-    margin-top: 2rem;
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  padding-top: var(--space-md);
+  border-top: var(--border-width) solid var(--color-border);
 }
 
+/* Base button styles */
 .prompt-edit-modal__cancel,
 .prompt-edit-modal__save {
-    padding: 0.625rem 1.25rem;
-    border-radius: 6px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 1px solid;
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--border-radius);
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
 }
 
+/* Cancel Button - Ghost/Outline */
 .prompt-edit-modal__cancel {
-    background: white;
-    color: #6b7280;
-    border-color: #d1d5db;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  border: var(--border-width) solid var(--color-border);
 }
 
 .prompt-edit-modal__cancel:hover:not(:disabled) {
-    background: #f9fafb;
-    color: #374151;
+  background: var(--color-user-bg);
 }
 
+/* Save Button - Inverted (black bg, white text) */
 .prompt-edit-modal__save {
-    background: #3b82f6;
-    color: white;
-    border-color: #3b82f6;
+  background: var(--color-fg);
+  color: var(--color-bg);
+  border: var(--border-width) solid var(--color-fg);
 }
 
 .prompt-edit-modal__save:hover:not(:disabled) {
-    background: #2563eb;
-    border-color: #2563eb;
+  background: var(--color-muted);
+  border-color: var(--color-muted);
+  transform: translateY(-1px);
 }
 
+/* Disabled States */
 .prompt-edit-modal__cancel:disabled,
 .prompt-edit-modal__save:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }

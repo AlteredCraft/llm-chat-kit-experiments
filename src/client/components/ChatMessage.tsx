@@ -10,7 +10,7 @@ interface ChatMessageProps {
 
 export function ChatMessage({ role, content, model, systemPromptName }: ChatMessageProps) {
     return (
-        <div className="chat-message">
+        <div className={`chat-message chat-message--${role}`}>
             <div className="chat-message__role">
                 {role}
                 {role === 'assistant' && (model || systemPromptName) && (

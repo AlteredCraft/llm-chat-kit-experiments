@@ -1,45 +1,87 @@
+/* ChatApp - Line Art Theme */
+
 .chat-app {
-    display: block;
-    height: 100vh;
-    background: var(--color-bg);
-    color: var(--color-fg);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--color-bg);
+  color: var(--color-fg);
 }
 
 .chat-app__main {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-width: 0;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
+/* Footer */
+.chat-app__footer {
+  border-top: var(--border-width) solid var(--color-border);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bg);
+}
+
+.chat-app__footer-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+.chat-app__footer-brand {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-fg);
+}
+
+.chat-app__footer-sep {
+  opacity: 0.5;
+}
+
+.chat-app__footer-link {
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.chat-app__footer-link:hover {
+  color: var(--color-accent-blue);
+  text-decoration: underline;
+}
+
+/* Sidebar */
 .chat-app__sidebar {
-    width: 320px;
-    border-left: var(--border-width) solid var(--color-border);
-    transform: translateX(100%);
-    transition: transform 0.2s ease;
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background: var(--color-bg);
-    z-index: 100;
+  width: 320px;
+  border-left: var(--border-width) solid var(--color-border);
+  transform: translateX(100%);
+  transition: transform 0.2s ease;
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--color-bg);
+  z-index: 100;
 }
 
 .chat-app__sidebar--open {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
+/* Overlay */
 .chat-app__overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s ease;
-    z-index: 99;
+  position: fixed;
+  inset: 0;
+  background: rgba(26, 26, 26, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 99;
 }
 
 .chat-app__overlay--visible {
-    opacity: 1;
-    pointer-events: auto;
+  opacity: 1;
+  pointer-events: auto;
 }

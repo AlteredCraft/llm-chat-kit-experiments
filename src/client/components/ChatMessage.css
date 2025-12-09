@@ -1,37 +1,83 @@
+/* ChatMessage - Line Art Theme */
+
 .chat-message {
-  margin: var(--space-sm) 0;
+  margin: var(--space-md) 0;
+  animation: message-enter var(--transition-slow) ease-out;
 }
 
+@keyframes message-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Role Label - Monospace, Uppercase, Technical */
 .chat-message__role {
-  font-size: 0.75rem;
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
   color: var(--color-muted);
   margin-bottom: var(--space-xs);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
+/* Color dot indicator before role text */
+.chat-message__role::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* User gets blue dot */
+.chat-message--user .chat-message__role::before {
+  background: var(--color-accent-blue);
+}
+
+/* Assistant gets orange dot */
+.chat-message--assistant .chat-message__role::before {
+  background: var(--color-accent-orange);
+}
+
+/* Model and system prompt metadata */
 .chat-message__model,
 .chat-message__system-prompt {
-  font-weight: normal;
+  font-weight: var(--font-weight-normal);
   text-transform: none;
   letter-spacing: normal;
+  color: var(--color-muted);
+  opacity: 0.8;
 }
 
+/* Message Content */
 .chat-message__content {
   padding: var(--space-sm) var(--space-md);
   border: var(--border-width) solid var(--color-border);
   border-radius: var(--border-radius);
   white-space: pre-wrap;
   word-wrap: break-word;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
+/* User messages - right-aligned feel */
 .chat-message__content--user {
   background: var(--color-user-bg);
-  margin-left: var(--space-lg);
+  margin-left: var(--space-xl);
 }
 
+/* Assistant messages - left-aligned feel */
 .chat-message__content--assistant {
   background: var(--color-assistant-bg);
-  margin-right: var(--space-lg);
+  margin-right: var(--space-xl);
 }

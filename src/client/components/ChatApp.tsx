@@ -179,6 +179,16 @@ export function ChatApp() {
                 />
             </div>
 
+            <footer className="chat-app__footer">
+                <div className="chat-app__footer-content">
+                    <span className="chat-app__footer-brand">LLM Chat Kit</span>
+                    <span className="chat-app__footer-sep">·</span>
+                    <span className="chat-app__footer-copy">© {new Date().getFullYear()}</span>
+                    <span className="chat-app__footer-sep">·</span>
+                    <a href="https://github.com" className="chat-app__footer-link" target="_blank" rel="noopener noreferrer">GitHub</a>
+                </div>
+            </footer>
+
             <div
                 className={`chat-app__overlay ${settingsOpen ? 'chat-app__overlay--visible' : ''}`}
                 onClick={() => setSettingsOpen(false)}

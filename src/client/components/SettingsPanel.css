@@ -1,51 +1,85 @@
+/* SettingsPanel - Line Art Theme */
+
 .settings-panel {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
+/* Header - Clean */
 .settings-panel__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: var(--space-sm) var(--space-md);
-    border-bottom: var(--border-width) solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: var(--border-width) solid var(--color-border);
 }
 
 .settings-panel__title {
-    font-weight: 600;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  letter-spacing: -0.02em;
 }
 
+/* Close Button */
 .settings-panel__close-btn {
-    padding: var(--space-xs) var(--space-sm);
-    border: var(--border-width) solid var(--color-border);
-    border-radius: var(--border-radius);
-    background: var(--color-bg);
-    color: var(--color-fg);
-    cursor: pointer;
-    font-family: inherit;
-    font-size: 1rem;
-    line-height: 1;
+  padding: var(--space-xs) var(--space-sm);
+  border: var(--border-width) solid var(--color-border);
+  border-radius: var(--border-radius);
+  background: var(--color-bg);
+  color: var(--color-fg);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast);
 }
 
 .settings-panel__close-btn:hover {
-    background: var(--color-user-bg);
+  background: var(--color-user-bg);
+  transform: scale(1.05);
 }
 
+/* Content Area */
 .settings-panel__content {
-    flex: 1;
-    overflow-y: auto;
-    padding: var(--space-md);
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
 }
 
+/* Sections */
 .settings-panel__section {
-    margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-xl);
 }
 
+/* Section Title - Monospace, Uppercase with Line Pattern */
 .settings-panel__section-title {
-    font-weight: 600;
-    font-size: 0.875rem;
-    margin-bottom: var(--space-sm);
-    padding-bottom: var(--space-xs);
-    border-bottom: var(--border-width) solid var(--color-border);
+  position: relative;
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: none;
+}
+
+/* Dashed line pattern under section title */
+.settings-panel__section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-fg) 0,
+    var(--color-fg) 2px,
+    transparent 2px,
+    transparent 6px
+  );
 }
