@@ -5,6 +5,7 @@ import { chatRoute } from './routes/chat';
 import { promptsRoute } from './routes/prompts';
 import { modelsRoute } from './routes/models';
 import { providersRoute } from './routes/providers';
+import { themeRoute } from './routes/theme';
 import { runStartupChecks, printStartupReport } from './lib/startup';
 
 // Run startup checks
@@ -25,6 +26,7 @@ app.route('/api/chat', chatRoute);
 app.route('/api/prompts', promptsRoute);
 app.route('/api/models', modelsRoute);
 app.route('/api/providers', providersRoute);
+app.route('/api/theme', themeRoute);
 
 // Serve static files from client build
 app.use('/*', serveStatic({ root: './dist/client' }));

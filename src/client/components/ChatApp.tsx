@@ -1,9 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { storage, type Settings } from '../services/storage';
 import { promptsApi, providersApi, type Prompt } from '../services/api';
+import {
+  type ThemeSettings,
+  type GeneratedTheme,
+  defaultThemeSettings,
+} from '../types/theme';
+import { useThemeSignals, formatSignalsForApi } from '../hooks/useThemeSignals';
+import { themeApi, applyTheme, resetTheme } from '../services/theme';
 import { ChatView } from './ChatView';
 import { SettingsPanel } from './SettingsPanel';
 import { PromptEditModal } from './PromptEditModal';
+import { ThemeProposal } from './ThemeProposal';
 import './ChatApp.css';
 
 const defaultSettings: Settings = {
@@ -24,9 +32,36 @@ export function ChatApp() {
     const [editingPrompt, setEditingPrompt] = useState<Prompt | null>(null);
     const [isCreatingPrompt, setIsCreatingPrompt] = useState(false);
 
+    // Theme state
+    const [themeSettings, setThemeSettings] = useState<ThemeSettings>(() => {
+        return storage.getThemeSettings() || defaultThemeSettings;
+    });
+    const [proposedTheme, setProposedTheme] = useState<GeneratedTheme | null>(null);
+    const [favoriteTheme, setFavoriteTheme] = useState<GeneratedTheme | null>(() => {
+        return storage.getFavoriteTheme();
+    });
+    const [activeTheme, setActiveTheme] = useState<GeneratedTheme | null>(() => {
+        return storage.getActiveTheme();
+    });
+    const [isGeneratingTheme, setIsGeneratingTheme] = useState(false);
+
+    // Theme signals hook
+    const { currentValues: signalValues, checkForChanges } = useThemeSignals(
+        themeSettings.checkFrequency,
+        themeSettings.autoGenerate
+    );
+
     useEffect(() => {
         loadDefaults();
         loadPrompts();
+    }, []);
+
+    // Restore active theme on mount
+    useEffect(() => {
+        const savedTheme = storage.getActiveTheme();
+        if (savedTheme) {
+            applyTheme(savedTheme);
+        }
     }, []);
 
     useEffect(() => {
@@ -165,6 +200,84 @@ export function ChatApp() {
         [activePrompt, prompts, handleSettingsChange]
     );
 
+    // Theme handlers
+    const handleThemeSettingsChange = useCallback((updates: Partial<ThemeSettings>) => {
+        setThemeSettings((prev) => {
+            const updated = { ...prev, ...updates };
+            storage.saveThemeSettings(updated);
+            return updated;
+        });
+    }, []);
+
+    const generateTheme = useCallback(async () => {
+        if (!settings.provider || !settings.model) {
+            console.error('No provider/model configured for theme generation');
+            return;
+        }
+
+        setIsGeneratingTheme(true);
+        try {
+            const response = await themeApi.generate({
+                provider: settings.provider,
+                model: settings.model,
+                signals: formatSignalsForApi(signalValues),
+                preferences: {
+                    useGoogleFonts: themeSettings.useGoogleFonts,
+                    preferDarkMode: themeSettings.preferDarkMode,
+                },
+            });
+
+            if (response.success && response.theme) {
+                const newTheme: GeneratedTheme = {
+                    id: `theme-${Date.now()}`,
+                    name: response.theme.name,
+                    css: response.theme.css,
+                    fonts: response.theme.fonts,
+                    generatedAt: new Date().toISOString(),
+                    signals: signalValues,
+                };
+                setProposedTheme(newTheme);
+            } else {
+                console.error('Theme generation failed:', response.error);
+            }
+        } catch (error) {
+            console.error('Theme generation error:', error);
+        } finally {
+            setIsGeneratingTheme(false);
+        }
+    }, [settings.provider, settings.model, signalValues, themeSettings]);
+
+    const handleApplyTheme = useCallback((theme: GeneratedTheme, saveAsFavorite: boolean) => {
+        applyTheme(theme);
+        setActiveTheme(theme);
+        storage.saveActiveTheme(theme);
+
+        if (saveAsFavorite) {
+            setFavoriteTheme(theme);
+            storage.saveFavoriteTheme(theme);
+        }
+
+        setProposedTheme(null);
+    }, []);
+
+    const handleDismissTheme = useCallback(() => {
+        setProposedTheme(null);
+    }, []);
+
+    const handleRestoreFavorite = useCallback(() => {
+        if (favoriteTheme) {
+            applyTheme(favoriteTheme);
+            setActiveTheme(favoriteTheme);
+            storage.saveActiveTheme(favoriteTheme);
+        }
+    }, [favoriteTheme]);
+
+    const handleResetTheme = useCallback(() => {
+        resetTheme();
+        setActiveTheme(null);
+        storage.clearActiveTheme();
+    }, []);
+
     return (
         <div className="chat-app">
             <div className="chat-app__main">
@@ -205,6 +318,14 @@ export function ChatApp() {
                     onPromptDeleted={handlePromptDeleted}
                     onStartEditPrompt={handleStartEditPrompt}
                     onStartCreatePrompt={handleStartCreatePrompt}
+                    themeSettings={themeSettings}
+                    favoriteTheme={favoriteTheme}
+                    activeTheme={activeTheme}
+                    isGeneratingTheme={isGeneratingTheme}
+                    onThemeSettingsChange={handleThemeSettingsChange}
+                    onSurpriseMe={generateTheme}
+                    onRestoreFavorite={handleRestoreFavorite}
+                    onResetTheme={handleResetTheme}
                 />
             </div>
 
@@ -215,6 +336,15 @@ export function ChatApp() {
                 onSave={handleSavePrompt}
                 isCreating={isCreatingPrompt}
             />
+
+            {proposedTheme && (
+                <ThemeProposal
+                    theme={proposedTheme}
+                    isOpen={!!proposedTheme}
+                    onApply={handleApplyTheme}
+                    onDismiss={handleDismissTheme}
+                />
+            )}
         </div>
     );
 }

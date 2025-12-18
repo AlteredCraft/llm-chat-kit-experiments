@@ -1,9 +1,11 @@
 import React from 'react';
 import type { Prompt } from '../services/api';
 import type { Settings } from '../services/storage';
+import type { ThemeSettings, GeneratedTheme } from '../types/theme';
 import { ProviderSelect } from './ProviderSelect';
 import { ParamControls } from './ParamControls';
 import { PromptManager } from './PromptManager';
+import { ThemePanel } from './ThemePanel';
 import './SettingsPanel.css';
 
 type ProviderName = 'openai' | 'anthropic' | 'google' | 'ollama';
@@ -18,6 +20,15 @@ interface SettingsPanelProps {
     onPromptDeleted: (promptId: string) => void;
     onStartEditPrompt: (prompt: Prompt) => void;
     onStartCreatePrompt: () => void;
+    // Theme props
+    themeSettings: ThemeSettings;
+    favoriteTheme: GeneratedTheme | null;
+    activeTheme: GeneratedTheme | null;
+    isGeneratingTheme: boolean;
+    onThemeSettingsChange: (updates: Partial<ThemeSettings>) => void;
+    onSurpriseMe: () => void;
+    onRestoreFavorite: () => void;
+    onResetTheme: () => void;
 }
 
 export function SettingsPanel({
@@ -30,6 +41,14 @@ export function SettingsPanel({
     onPromptDeleted,
     onStartEditPrompt,
     onStartCreatePrompt,
+    themeSettings,
+    favoriteTheme,
+    activeTheme,
+    isGeneratingTheme,
+    onThemeSettingsChange,
+    onSurpriseMe,
+    onRestoreFavorite,
+    onResetTheme,
 }: SettingsPanelProps) {
     return (
         <div className="settings-panel">
@@ -70,6 +89,20 @@ export function SettingsPanel({
                         onPromptDeleted={onPromptDeleted}
                         onStartEditPrompt={onStartEditPrompt}
                         onStartCreatePrompt={onStartCreatePrompt}
+                    />
+                </div>
+
+                <div className="settings-panel__section">
+                    <div className="settings-panel__section-title">AI Theme</div>
+                    <ThemePanel
+                        settings={themeSettings}
+                        favoriteTheme={favoriteTheme}
+                        activeTheme={activeTheme}
+                        isGenerating={isGeneratingTheme}
+                        onSettingsChange={onThemeSettingsChange}
+                        onSurpriseMe={onSurpriseMe}
+                        onRestoreFavorite={onRestoreFavorite}
+                        onResetTheme={onResetTheme}
                     />
                 </div>
             </div>

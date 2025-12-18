@@ -1,6 +1,11 @@
+import type { ThemeSettings, GeneratedTheme } from '../types/theme';
+
 const STORAGE_KEYS = {
   SETTINGS: 'chat-ui-settings',
   CONVERSATION: 'chat-ui-conversation',
+  THEME_SETTINGS: 'chat-ui-theme-settings',
+  FAVORITE_THEME: 'chat-ui-favorite-theme',
+  ACTIVE_THEME: 'chat-ui-active-theme',
 } as const;
 
 export interface Settings {
@@ -72,6 +77,49 @@ export const storage = {
       localStorage.removeItem(STORAGE_KEYS.CONVERSATION);
     } catch (error) {
       console.error('Failed to clear storage:', error);
+    }
+  },
+
+  // Theme Settings
+  getThemeSettings(): ThemeSettings | null {
+    return safeGetItem<ThemeSettings>(STORAGE_KEYS.THEME_SETTINGS);
+  },
+
+  saveThemeSettings(settings: ThemeSettings): void {
+    safeSetItem(STORAGE_KEYS.THEME_SETTINGS, settings);
+  },
+
+  // Favorite Theme
+  getFavoriteTheme(): GeneratedTheme | null {
+    return safeGetItem<GeneratedTheme>(STORAGE_KEYS.FAVORITE_THEME);
+  },
+
+  saveFavoriteTheme(theme: GeneratedTheme): void {
+    safeSetItem(STORAGE_KEYS.FAVORITE_THEME, theme);
+  },
+
+  clearFavoriteTheme(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.FAVORITE_THEME);
+    } catch (error) {
+      console.error('Failed to clear favorite theme:', error);
+    }
+  },
+
+  // Active Theme (currently applied)
+  getActiveTheme(): GeneratedTheme | null {
+    return safeGetItem<GeneratedTheme>(STORAGE_KEYS.ACTIVE_THEME);
+  },
+
+  saveActiveTheme(theme: GeneratedTheme): void {
+    safeSetItem(STORAGE_KEYS.ACTIVE_THEME, theme);
+  },
+
+  clearActiveTheme(): void {
+    try {
+      localStorage.removeItem(STORAGE_KEYS.ACTIVE_THEME);
+    } catch (error) {
+      console.error('Failed to clear active theme:', error);
     }
   },
 };
