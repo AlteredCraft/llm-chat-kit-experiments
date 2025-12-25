@@ -4,6 +4,8 @@ An experimental project exploring **preemptive AI actions**. An AI autonomously 
 
 ## The Concept
 
+![alt text](<docs/theme switch.gif>)
+
 Traditional AI interactions are reactive: the user asks, the AI responds. But what if an AI could observe context and *proactively* suggest or make changes?
 
 This project demonstrates that idea through a **dynamic theme system**:
