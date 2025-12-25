@@ -26,7 +26,7 @@ export const themeRoute = new Hono();
 themeRoute.post('/generate', async (c) => {
   try {
     const body = await c.req.json<ThemeGenerateRequest>();
-    const { provider, model, signals, preferences } = body;
+    const { provider, model, signals, preferences, currentThemeCss } = body;
 
     console.log('Theme generation request:', {
       provider,
@@ -73,7 +73,7 @@ themeRoute.post('/generate', async (c) => {
       preferDarkMode: preferences?.preferDarkMode ?? false,
     };
 
-    const prompt = buildThemePrompt(signals, themePreferences);
+    const prompt = buildThemePrompt(signals, themePreferences, currentThemeCss);
 
     // Get the model instance
     const modelInstance = getModel(provider as ProviderName, model);
@@ -86,8 +86,8 @@ themeRoute.post('/generate', async (c) => {
         { role: 'system', content: prompt.system },
         { role: 'user', content: prompt.user },
       ],
-      temperature: 0.8, // Creative but not too wild
-      maxTokens: 2048,
+      temperature: 0.9, // High creativity for unique themes
+      maxOutputTokens: 2048,
     });
 
     console.log('LLM response received, parsing...');

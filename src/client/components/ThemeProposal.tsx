@@ -78,51 +78,71 @@ export function ThemeProposal({
     .map(([, value]) => value.label)
     .join(', ');
 
+  // Generate a contextual greeting based on time of day
+  const getContextualGreeting = (): { greeting: string; suggestion: string } => {
+    const hour = new Date().getHours();
+    const themeName = theme.name;
+
+    if (hour >= 5 && hour < 12) {
+      return {
+        greeting: "Good morning!",
+        suggestion: `The early light inspired "${themeName}" — a fresh look to start your day.`
+      };
+    } else if (hour >= 12 && hour < 17) {
+      return {
+        greeting: "Hey there!",
+        suggestion: `I noticed it's ${signalDescriptions.toLowerCase()}. How about "${themeName}"?`
+      };
+    } else if (hour >= 17 && hour < 21) {
+      return {
+        greeting: "Good evening!",
+        suggestion: `As the day winds down, "${themeName}" might set the right mood.`
+      };
+    } else {
+      return {
+        greeting: "Working late?",
+        suggestion: `"${themeName}" is designed to be easy on your eyes at this hour.`
+      };
+    }
+  };
+
+  const { greeting, suggestion } = getContextualGreeting();
+
   return (
     <div className="theme-proposal" onKeyDown={handleKeyDown}>
       <div className="theme-proposal__overlay" onClick={handleDismiss} />
       <div className="theme-proposal__content">
         <div className="theme-proposal__header">
-          <h2>New Theme Available</h2>
+          <h2>{greeting}</h2>
           <button className="theme-proposal__close" onClick={handleDismiss}>
             <X size={20} />
           </button>
         </div>
 
         <div className="theme-proposal__body">
-          {/* Theme Name */}
+          {/* Conversational suggestion */}
+          <p className="theme-proposal__suggestion">{suggestion}</p>
+
+          {/* Theme Name - now more prominent */}
           <div className="theme-proposal__name">
-            <span className="theme-proposal__name-label">Theme:</span>
             <span className="theme-proposal__name-value">{theme.name}</span>
-          </div>
-
-          {/* Context Info */}
-          <div className="theme-proposal__context">
-            <div className="theme-proposal__context-row">
-              <span className="theme-proposal__context-label">Based on:</span>
-              <span className="theme-proposal__context-value">
-                {signalDescriptions || 'Current conditions'}
+            {theme.fonts && theme.fonts.length > 0 && (
+              <span className="theme-proposal__fonts-inline">
+                featuring {theme.fonts.map((f) => f.family).join(' & ')}
               </span>
-            </div>
-            <div className="theme-proposal__context-row">
-              <span className="theme-proposal__context-label">Generated:</span>
-              <span className="theme-proposal__context-value">{generatedAt}</span>
-            </div>
+            )}
           </div>
-
-          {/* Fonts Info (if any) */}
-          {theme.fonts && theme.fonts.length > 0 && (
-            <div className="theme-proposal__fonts">
-              <span className="theme-proposal__fonts-label">Fonts:</span>
-              <span className="theme-proposal__fonts-value">
-                {theme.fonts.map((f) => f.family).join(', ')}
-              </span>
-            </div>
-          )}
 
           {/* Preview Note */}
           <div className="theme-proposal__preview-note">
-            <span>✨ Preview active - this is how the app will look</span>
+            <span>✨ Take a look around — the preview is live</span>
+          </div>
+
+          {/* Context Info - now secondary */}
+          <div className="theme-proposal__context">
+            <span className="theme-proposal__context-label">
+              Inspired by {signalDescriptions.toLowerCase() || 'current conditions'} · {generatedAt}
+            </span>
           </div>
 
           {/* Save as Favorite Option */}
@@ -147,14 +167,14 @@ export function ThemeProposal({
             className="theme-proposal__dismiss"
             onClick={handleDismiss}
           >
-            Dismiss
+            Not now
           </button>
           <button
             type="button"
             className="theme-proposal__apply"
             onClick={handleApply}
           >
-            Apply Theme
+            Love it, keep it!
           </button>
         </div>
       </div>

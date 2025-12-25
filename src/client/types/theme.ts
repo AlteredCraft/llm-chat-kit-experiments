@@ -122,6 +122,7 @@ export interface ThemeGenerateRequest {
   model: string;
   signals: Record<string, { raw: unknown; label: string }>;
   preferences: ThemePreferences;
+  currentThemeCss?: string; // Current theme CSS to differentiate from
 }
 
 /**

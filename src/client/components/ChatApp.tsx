@@ -225,6 +225,7 @@ export function ChatApp() {
                     useGoogleFonts: themeSettings.useGoogleFonts,
                     preferDarkMode: themeSettings.preferDarkMode,
                 },
+                currentThemeCss: activeTheme?.css,
             });
 
             if (response.success && response.theme) {
@@ -245,7 +246,7 @@ export function ChatApp() {
         } finally {
             setIsGeneratingTheme(false);
         }
-    }, [settings.provider, settings.model, signalValues, themeSettings]);
+    }, [settings.provider, settings.model, signalValues, themeSettings, activeTheme]);
 
     const handleApplyTheme = useCallback((theme: GeneratedTheme, saveAsFavorite: boolean) => {
         applyTheme(theme);

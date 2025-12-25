@@ -1,41 +1,17 @@
 # Agent Instructions
-
 ## Commands
-- **Build**: `bun run build` (Client & Server)
-- **Dev**: `bun run dev` (Client only), `bun run dev:server` (Server only). **Both must run simultaneously** for full app functionality.
-- **Dev Management**: `./restart-dev.sh` (Restart both), `./restart-dev.sh --stop` (Stop all), `./restart-dev.sh --help` (Show usage)
-- **Test All**: `bun test` (Target: Functions >80%, Lines >70%)
-- **Test Single**: `bun test tests/unit/startup.test.ts`
-- **Test Unit**: `bun test:unit` (Isolated logic, mocked deps)
-- **Test Integ**: `bun test:integ` (Hono API flow, no browser)
-- **Lint**: `bun x tsc --noEmit` (Standard TS check)
-
-## Code Style & Conventions
-- **Stack**: TypeScript, React (Client), Hono (Server), Vercel AI SDK.
-- **Architecture**: Thin proxy pattern. Client-side state (localStorage). No server sessions.
-- **Dependency Injection**: Use DI for testability (e.g., `deps: StartupDeps` in `lib/startup.ts`).
-- **Testing**:
-  - **Unit**: Isolate business logic. Mock FS/Env via DI. Fast & deterministic.
-  - **Integ**: Test request/response flow using Hono's `app.request()`. Verify HTTP status/JSON.
-  - **Rules**: Avoid over-mocking. Test behavior, not implementation. 
-- **Naming**: PascalCase for Components (`ChatApp`), camelCase for functions/vars.
-- **Config**: Providers in `config/providers.config.js`, Prompts in `config/prompts.default.json`.
-- **Formatting**: Standard TypeScript/React conventions.
-
-## Testing
-
-**IMPORTANT TEST REQUIREMENTS**: 
-- Run all tests after completing changes to ensure nothing is broken.
-  Report using ✅ or ❌ so it stands out.
-- Code coveraage MUST be higher that 80%, it it is not pause and ask the user if we should add more tests or if they want to proceed anyway.
-- ensure we don't over mock, we want valuable test that are testing our code not just mocks. Use DI where it makes sense.
-
-Two-tier approach (see `TESTS_STRAT.md` for details):
-
-- **Unit tests** (`tests/unit/`) - Isolated functions with dependency injection
-- **Integration tests** (`tests/integ/`) - API endpoints via Hono's in-process test client (no browser)
-
-Startup checks in `lib/startup.ts` accept optional `deps` parameter for testability:
-```typescript
-runStartupChecks({ env: {}, fileExists: () => false })
-```
+- **Build**: `bun run build`
+- **Dev**: `bun run dev` (client) & `bun run dev:server` (server)
+- **Lint**: `bun x tsc --noEmit`
+- **Test**: `bun test` (Target: 80% functions, 70% lines). Single: `bun test <file_path>`
+## Code Style
+- **Stack**: TypeScript, React, Hono, Vercel AI SDK. Thin proxy pattern.
+- **Architecture**: Client-side state (localStorage). No server sessions.
+- **Naming**: PascalCase for Components, camelCase for functions/vars.
+- **Imports**: Relative paths. Standard TS/React conventions.
+- **Typing**: Explicit types for API. Use Zod for validation.
+- **Logic**: Use Dependency Injection for testability (e.g. `deps` objects).
+- **Errors**: Catch/log in routes; return descriptive JSON + status codes.
+- **Testing**: Unit (isolated logic via DI) vs Integration (API flow via Hono).
+- **Conventions**: Avoid over-mocking. Test behavior over implementation.
+- **Workflow**: Run all tests before finish. Report status with ✅/❌.

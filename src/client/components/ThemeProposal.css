@@ -90,80 +90,62 @@
   padding: var(--space-lg);
 }
 
+/* Suggestion Text */
+.theme-proposal__suggestion {
+  margin: 0 0 var(--space-lg) 0;
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--color-fg);
+}
+
 /* Theme Name */
 .theme-proposal__name {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
   margin-bottom: var(--space-md);
-}
-
-.theme-proposal__name-label {
-  font-family: var(--font-family-mono);
-  font-size: var(--font-size-xs);
-  font-weight: var(--font-weight-semibold);
-  color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  padding: var(--space-md);
+  background: var(--color-user-bg);
+  border-radius: var(--border-radius);
+  text-align: center;
 }
 
 .theme-proposal__name-value {
-  font-size: var(--font-size-xl);
+  font-size: calc(var(--font-size-xl) * 1.2);
   font-weight: var(--font-weight-bold);
   color: var(--color-fg);
   letter-spacing: -0.02em;
 }
 
-/* Context Info */
-.theme-proposal__context {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-md);
-  padding: var(--space-sm) var(--space-md);
-  background: var(--color-user-bg);
-  border-radius: var(--border-radius);
+.theme-proposal__fonts-inline {
+  font-size: var(--font-size-sm);
+  color: var(--color-fg);
+  font-style: italic;
+  opacity: 0.7;
 }
 
-.theme-proposal__context-row {
-  display: flex;
-  gap: var(--space-sm);
-  font-size: var(--font-size-sm);
+/* Context Info - now minimal */
+.theme-proposal__context {
+  margin-bottom: var(--space-md);
+  text-align: center;
 }
 
 .theme-proposal__context-label {
-  color: var(--color-muted);
-}
-
-.theme-proposal__context-value {
-  color: var(--color-fg);
-}
-
-/* Fonts Info */
-.theme-proposal__fonts {
-  display: flex;
-  gap: var(--space-sm);
   font-size: var(--font-size-sm);
-  margin-bottom: var(--space-md);
-}
-
-.theme-proposal__fonts-label {
-  color: var(--color-muted);
-}
-
-.theme-proposal__fonts-value {
   color: var(--color-fg);
-  font-style: italic;
+  opacity: 0.6;
 }
 
 /* Preview Note */
 .theme-proposal__preview-note {
   padding: var(--space-sm) var(--space-md);
-  background: var(--color-accent-blue-light);
+  background: var(--color-fg);
   border-radius: var(--border-radius);
   font-size: var(--font-size-sm);
-  color: var(--color-accent-blue);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-bg);
   margin-bottom: var(--space-md);
+  text-align: center;
 }
 
 /* Option Row */
